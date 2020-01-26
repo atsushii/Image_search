@@ -35,7 +35,7 @@ def index():
 # define upload function
 @app.route("/upload", methods=["POST"])
 def upload():
-    upload_dir = os.path.join(APP_ROOT, "upload/")
+    upload_dir = os.path.join(APP_ROOT, "uploads/")
 
     if not os.path.isdir(upload_dir):
         os.mkdir(upload_dir)
@@ -56,6 +56,7 @@ def upload():
     final_result = []
 
     for img in result:
+        print(img)
         final_result.append("images/" + img.split("/")[-1]) # grab file name
 
     return render_template("result.html", image_name=img_name, result_path=final_result)
@@ -63,7 +64,7 @@ def upload():
 # define helper function
 @app.route("/upload/<filename>")
 def send_image(filename):
-    return send_from_directory("upload", filename)
+    return send_from_directory("uploads", filename)
 
 #Start application
 if __name__ == "__main__":
