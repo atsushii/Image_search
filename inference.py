@@ -36,9 +36,10 @@ def inference(model, train_set_vector, upload_image_path, image_size, distance="
         upload_image_vector = np.hstack((dense_2_features, dense_4_features))
         closest_id = hamming_distance(train_set_vector, upload_image_vector)
     elif distance == "cosine":
-        upload_image_vector = np.hstack(train_set_vector, upload_image_vector)
+        upload_image_vector = np.hstack((dense_2_features, dense_4_features))
         closest_id = cosine_distance(train_set_vector, upload_image_vector)
     return closest_id
+
 
 def inference_with_color_filter(model, train_set_vector, upload_image_path, color_vector, image_size,
                                 distance="hamming"):
@@ -75,16 +76,16 @@ def inference_with_color_filter(model, train_set_vector, upload_image_path, colo
         dense_4_feature = np.where(dense_4_feature < 0.5, 0, 1)
 
         upload_image_vector = np.hstack((dense_2_feature, dense_4_feature))
-        closest_id = hamming_distance(train_set_vector, upload_image_vector)
+        closest_ids = hamming_distance(train_set_vector, upload_image_vector)
 
         # compare color feature between query image and closest image
-        closest_id = compare_color(np.array(color_vector)[closest_id], color_feature, closest_id)
+        closest_ids = compare_color(np.array(color_vector)[closest_ids], color_feature, closest_ids)
 
     elif distance == "cosine":
 
         upload_image_vector = np.hstack((dense_2_feature, dense_4_feature))
-        closest_id = cosine_distance(train_set_vector, upload_image_vector)
+        closest_ids = cosine_distance(train_set_vector, upload_image_vector)
 
         # compare color feature between query image and closest image
-        closest_id = compare_color(np.array(color_vector)[closest_id], color_feature, closest_id)
-    return closest_id
+        closest_ids = compare_color(np.array(color_vector)[closest_ids], color_feature, closest_ids)
+    return closest_ids
