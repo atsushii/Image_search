@@ -20,7 +20,7 @@
 
         <hr>
         <!-- Iterate through images -->
-        {% for image_name in result_paths %}
+        {% for image_name in result_path %}
         <div class="col-lg-1 col-md-4 col-xs-6 thumb">
             <br>
             <img class="img-responsive" src=" {{url_for('static', filename=image_name)}}">
